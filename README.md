@@ -31,7 +31,7 @@ Sticky Scanner is a web application that allows users to upload their sticky not
 
    python app.py
 
-4. Opoen your web browser and navigate to http://localhost:5000 to access the application.
+4. Open your web browser and navigate to http://localhost:5000 to access the application.
 
 ## Screenshots
 Include some screenshots of the application here to give users a visual representation of the user interface.
