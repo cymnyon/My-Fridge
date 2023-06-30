@@ -1,6 +1,6 @@
 # Sticky Scanner
 
-Sticky Scanner is a web application that allows users to upload their sticky notes, diaries, name cards, or any image with text and store them in a personal private space as text.
+Sticky Scanner is a web application that allows users to upload their sticky notes, diaries, name cards, or any image with text and store them in a private space as text.
 
 ## Features
 
