@@ -56,7 +56,7 @@ To use **My Fridge**, follow these steps:
 6. Open your web browser and navigate to http://localhost:5000 to access the application.
 
 ## Feedback and Support
-I am committed to continuously improving **My Fridge** to meet your needs and expectations. If you encounter any issues or have suggestions for new features, please don't hesitate to reach out to me. Your feedback is invaluable in making this app even better.
+I am committed to continuously improving **My Fridge** to meet your needs and expectations. If you encounter any issues or have suggestions for new features, please don't hesitate to reach out. Your feedback is invaluable in making this app even better.
 
 Thank you for choosing **My Fridge** to help you preserve and organize your memories and interests. I hope you enjoy using the app!
 
