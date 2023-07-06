@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Texts</title>
+</head>
+<body>
+    <h1>All Texts</h1>
+    <ul>
+        {% for note in notes %}
+            <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

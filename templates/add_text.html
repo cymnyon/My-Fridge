@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Text</title>
+</head>
+<body>
+    <h1>Add Text</h1>
+    <form action="{{ url_for('add_text') }}" method="post">
+        <select name="category_id" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <textarea name="text" placeholder="Enter text"></textarea>
+        <input type="submit" value="Add Text">
+    </form>
+</body>
+</html>

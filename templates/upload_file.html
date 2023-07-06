@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+    <h1>Upload File</h1>
+    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+        <select name="category_id" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
+        <input type="text" name="image_title" placeholder="Enter title" required>
+        <input type="submit" value="Upload">
+    </form>
+</body>
+</html>
