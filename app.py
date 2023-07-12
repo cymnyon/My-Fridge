@@ -4,6 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import cv2
 import pytesseract
 import os
+import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///handwriting.db'
@@ -28,6 +29,7 @@ class Note(db.Model):
     content = db.Column(db.Text, nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     category = db.relationship('Category', backref=db.backref('notes', lazy=True))
+    post_type = db.Column(db.String(10), nullable=False)
 
     def __repr__(self):
         return f"<Note {self.title}>"
@@ -48,6 +50,8 @@ with app.app_context():
 def index():
     if 'user_id' not in session:
         return redirect(url_for('login'))
+    
+    user = User.query.get(session['user_id'])
     
     if request.method == 'POST':
         # Check if the request contains an uploaded file
@@ -72,7 +76,6 @@ def index():
         elif 'show all' in request.form:
             return redirect(url_for('all_texts'))
     
-    user = User.query.get(session['user_id'])
     categories = Category.query.filter_by(user_id=session['user_id']).all()
     # Render the main page with the upload form and drawing space
     return render_template('main.html', user=user, categories=categories)
@@ -171,6 +174,28 @@ def view_note(note_id):
         error = 'Note not found'
         return render_template('main.html', error=error)
     
+@app.route('/edit_text/<int:note_id>', methods=['GET', 'POST'])
+def edit_text(note_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    note = Note.query.get(note_id)
+    if note and note.category.user_id == session['user_id']:
+        if request.method == 'POST':
+            edit_title = request.form['edit_title']
+            edit_content = request.form['edit_content']
+
+            note.title = edit_title
+            note.content = edit_content
+            db.session.commit()
+
+            return redirect(url_for('view_note', note_id=note.id))
+
+        return render_template('edit_text.html', note=note)
+    else:
+        error = 'Note not found'
+        return render_template('main.html', error=error)
+    
 @app.route('/create_category', methods=['POST'])
 def create_category():
     if 'user_id' not in session:
@@ -180,6 +205,44 @@ def create_category():
     category = Category(name=category_name, user_id=session['user_id'])
     db.session.add(category)
     db.session.commit()
+    return redirect(url_for('main'))
+
+@app.route('/edit_category/<int:category_id>', methods=['POST'])
+def edit_category(category_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    new_category_name = request.form['new_category_name']
+    category = Category.query.get(category_id)
+    if category and category.user_id == session['user_id']:
+        category.name = new_category_name
+        db.session.commit()
+
+    return redirect(url_for('main'))
+
+@app.route('/remove_category/<int:category_id>', methods=['POST'])
+def remove_category(category_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    category = Category.query.get(category_id)
+    if category and category.user_id == session['user_id']:
+        # Reassign notes to the "Show all" category
+        show_all_category = Category.query.filter_by(user_id=session['user_id'], name='Show all').first()
+
+        if show_all_category is None:
+            # Create the "Show all" category if it doesn't exist
+            show_all_category = Category(name='Show all', user_id=session['user_id'])
+            db.session.add(show_all_category)
+            db.session.commit()
+
+        notes = Note.query.filter_by(category_id=category_id).all()
+        for note in notes:
+            note.category_id = None
+
+        db.session.delete(category)
+        db.session.commit()
+
     return redirect(url_for('main'))
 
 @app.route('/create_note', methods=['POST'])
@@ -257,11 +320,16 @@ def upload_file():
         if file.filename != '':
             image_path = 'uploaded_image.png'
             file.save(image_path)
-            text = image_to_text(image_path)
+            post_type = request.form['post_type']
+            if post_type == 'movie':
+                text = ocr_movie_poster(image_path)
+            else:
+                text = image_to_text(image_path)
+
             category_id = request.form['category_id']
             note_title = request.form['image_title']
             note_content = text
-            note = Note(title=note_title, content=note_content, category_id=category_id)
+            note = Note(title=note_title, content=note_content, category_id=category_id, post_type=post_type)
             db.session.add(note)
             db.session.commit()
 
@@ -317,6 +385,7 @@ def add_text_from_image():
     image_file = request.files['image_file']
     image_title = request.form['image_title']
     category_id = request.form['category_id']
+    post_type = request.form['post_type']
 
     # Create the 'uploads' directory if it doesn't exist
     if not os.path.exists('uploads'):
@@ -326,15 +395,44 @@ def add_text_from_image():
     image_path = os.path.join('uploads', image_file.filename)
     image_file.save(image_path)
 
-    # Process the image and extract text using the image_to_text helper function
-    text = image_to_text(image_path)
+    # Process the image and extract text using the appropriate function based on post_type
+    if post_type == 'movie':
+        text = ocr_movie_poster(image_path)
+    else:
+        text = image_to_text(image_path)
 
     # Create a new note with the extracted text and image title
-    note = Note(title=image_title, content=text, category_id=category_id)
+    note = Note(title=image_title, content=text, category_id=category_id, post_type=post_type)
     db.session.add(note)
     db.session.commit()
 
     return redirect(url_for('category_notes', category_id=category_id))
+
+def ocr_movie_poster(image_path):
+    img = cv2.imread(image_path)
+
+    if img is None:
+        return "Failed to load the image. Please check the file path."
+    
+    # Preprocess the image (resize, denoise, etc.)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.resize(gray, None, fx=2, fy=2)  # Resize the image to improve OCR accuracy
+    gray = cv2.medianBlur(gray, 3)  # Apply median blur to reduce noise
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Apply thresholding or other image enhancement techniques if necessary
+    _, thresholded = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+    # Perform OCR using pytesseract
+    text = pytesseract.image_to_string(thresholded)
+
+    # Clean up the extracted text (ex. remove unnecessary characters, perform post-processing)
+    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text)  # Remove non-alphanumeric characters
+    cleaned_text = cleaned_text.strip()  # Remove leading/trailing whitespaces
+    cleaned_text = re.sub(r'\s+', ' ', cleaned_text)  # Replace multiple spaces with a single space
+
+    return cleaned_text
 
 if __name__ == '__main__':
     app.run(debug=True)

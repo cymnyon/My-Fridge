@@ -10,5 +10,7 @@
             <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
         {% endfor %}
     </ul>
+    
+    <a href="{{ url_for('main') }}">Back to Categories</a>
 </body>
 </html>

@@ -7,5 +7,6 @@
     <h1>{{ note.title }}</h1>
     <p>{{ note.content }}</p>
     <a href="{{ url_for('category_notes', category_id=note.category.id) }}">Back to Notes</a>
+    <a href="{{ url_for('edit_text', note_id=note.id) }}">Edit Text</a>
 </body>
 </html>

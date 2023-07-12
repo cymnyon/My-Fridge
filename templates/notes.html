@@ -23,8 +23,15 @@
     <h2>Add Text from Image:</h2>
     <form action="{{ url_for('add_text_from_image') }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="category_id" value="{{ category.id }}">
-        <input type="file" name="image_file" accept=".png, .jpg, .jpeg">
-        <input type="text" name="image_title" placeholder="Enter title">
+        <label for="image_file">Image:</label>
+        <input type="file" name="image_file" accept=".png, .jpg, .jpeg"><br>
+        <label for="image_title">Title:</label>
+        <input type="text" name="image_title" placeholder="Enter title"><br>
+        <label for="post_type">Post Type:</label>
+        <select name="post_type">
+            <option value="text">Text</option>
+            <option value="movie">Movie</option>
+        </select><br>
         <input type="submit" value="Add Text from Image">
     </form>
 
@@ -39,5 +46,7 @@
         </select>
         <input type="submit" value="Remove">
     </form>
+
+    <a href="{{ url_for('main') }}">Back to Categories</a>
 </body>
 </html>
