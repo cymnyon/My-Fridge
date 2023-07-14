@@ -1,0 +1,116 @@
+body {
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.header {
+    margin-top: 20px;
+}
+
+.category-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply styles to the <h1> elements */
+h1 {
+    color: #af33e0;
+    font-size: 45px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <h2> elements */
+h2 {
+    color: #f7cb08;
+    font-size: 35px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <h3> elements */
+h3 {
+    color: #f7cb08;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <ul> elements */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Apply styles to the <li> elements */
+li {
+    margin-bottom: 10px;
+}
+
+/* Apply styles to the <form> elements */
+form {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <select> elements */
+select {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <button> elements */
+button {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the <input> elements */
+input[type="text"],
+input[type="submit"] {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+}
+
+/* Apply styles to the <a> elements */
+a {
+    color: #17E9E0;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+    text-decoration: underline;
+}
+
+/* Apply styles to the <p> elements */
+p {
+    color: #333;
+    font-size: 18px;
+    font-family: 'VT323', monospace;
+}
+
+/* Apply styles to the error message */
+.error {
+    color: red;
+    font-weight: bold;
+}

@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>{{ note.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>{{ note.title }}</h1>

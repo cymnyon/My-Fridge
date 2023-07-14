@@ -12,6 +12,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key'  # Add a secret key for session management
 db = SQLAlchemy(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+    nickname = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+
 # Define Category model
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,15 +42,6 @@ class Note(db.Model):
 
     def __repr__(self):
         return f"<Note {self.title}>"
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    nickname = db.Column(db.String(50), nullable=False)
-
-    def __repr__(self):
-        return f"<User {self.username}>"
 
 with app.app_context():
     db.create_all()
@@ -69,10 +69,6 @@ def index():
             return redirect(url_for('add_text'))
         elif 'upload_file' in request.form:
             return redirect(url_for('upload_file'))
-        # elif 'text' in request.form:
-        #     text = request.form['text']
-        #     # Render the result page with the entered text
-        #     return redirect(url_for('result', text=text))
         elif 'show all' in request.form:
             return redirect(url_for('all_texts'))
     
@@ -228,13 +224,13 @@ def remove_category(category_id):
     category = Category.query.get(category_id)
     if category and category.user_id == session['user_id']:
         # Reassign notes to the "Show all" category
-        show_all_category = Category.query.filter_by(user_id=session['user_id'], name='Show all').first()
+        # show_all_category = Category.query.filter_by(user_id=session['user_id'], name='Show all').first()
 
-        if show_all_category is None:
-            # Create the "Show all" category if it doesn't exist
-            show_all_category = Category(name='Show all', user_id=session['user_id'])
-            db.session.add(show_all_category)
-            db.session.commit()
+        # if show_all_category is None:
+        #     # Create the "Show all" category if it doesn't exist
+        #     show_all_category = Category(name='Show all', user_id=session['user_id'])
+        #     db.session.add(show_all_category)
+        #     db.session.commit()
 
         notes = Note.query.filter_by(category_id=category_id).all()
         for note in notes:

@@ -2,29 +2,60 @@
 <html>
 <head>
     <title>Main Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>{{ user.nickname }}'s fridge</h1>
-    <h2>Categories:</h2>
-    <ul>
-        <li><a href="{{ url_for('show_all_texts') }}">Show All</a></li>
-        {% for category in categories %}
-            <li>
-                <a href="{{ url_for('category_notes', category_id=category.id) }}">{{ category.name }}</a>
-                <form action="{{ url_for('edit_category', category_id=category.id) }}" method="post" style="display: inline;">
-                    <input type="text" name="new_category_name" placeholder="New name" required>
-                    <input type="submit" value="Edit">
-                </form>
-                <form action="{{ url_for('remove_category', category_id=category.id) }}" method="post" style="display: inline;">
-                    <input type="submit" value="Remove">
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-    <h3>Add Category:</h3>
-    <form action="{{ url_for('create_category') }}" method="post">
-        <input type="text" name="category_name" placeholder="Enter category name" required>
-        <input type="submit" value="Add Category">
-    </form>
+    <div class="header">
+        <h1>{{ user.nickname }}'s fridge</h1>
+    </div>
+    <div class="main-container">
+        <div class="category-container">
+            <h2>Categories:</h2>
+            <ul>
+                <li><a href="{{ url_for('show_all_texts') }}">Show All</a></li>
+                {% for category in categories %}
+                    <li>
+                        <a href="{{ url_for('category_notes', category_id=category.id) }}">{{ category.name }}</a>
+                        <button class="edit-category-btn">Edit Category</button>
+                        <form action="{{ url_for('edit_category', category_id=category.id) }}" method="post" class="edit-category-form">
+                            <input type="text" name="new_category_name" placeholder="New name" required>
+                            <input type="submit" value="Edit">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3>Add Category:</h3>
+            <form action="{{ url_for('create_category') }}" method="post">
+                <input type="text" name="category_name" placeholder="Enter category name" required>
+                <input type="submit" value="Add Category">
+            </form>
+            <h3>Remove Category:</h3>
+            <form method="post">
+                <select name="category_id" required>
+                    <option value="" disabled selected>Select a category</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Remove">
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var editCategoryBtns = document.querySelectorAll('.edit-category-btn');
+            var editCategoryForms = document.querySelectorAll('.edit-category-form');
+
+            for (var i = 0; i < editCategoryBtns.length; i++) {
+                editCategoryForms[i].style.display = 'none';
+                editCategoryBtns[i].addEventListener('click', function() {
+                    var form = this.nextElementSibling;
+                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
