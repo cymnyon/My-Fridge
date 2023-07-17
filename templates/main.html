@@ -5,43 +5,67 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .category-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .category-container h2 {
+            margin-bottom: 10px;
+        }
+        .category-container h3 {
+            margin-bottom: 5px;
+        }
+        .category-container form {
+            margin-bottom: 10px;
+        }
+        .category-container input[type="text"],
+        .category-container input[type="submit"],
+        .category-container select {
+            width: 200px;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
+    <div class="category-container">
         <h1>{{ user.nickname }}'s fridge</h1>
-    </div>
-    <div class="main-container">
-        <div class="category-container">
-            <h2>Categories:</h2>
-            <ul>
-                <li><a href="{{ url_for('show_all_texts') }}">Show All</a></li>
+        <h2>Categories:</h2>
+        <ul>
+            <li><a href="{{ url_for('show_all_texts') }}">Show All</a></li>
+            {% for category in categories %}
+                <li>
+                    <a href="{{ url_for('category_notes', category_id=category.id) }}">{{ category.name }}</a>
+                    <button class="edit-category-btn">Edit Category</button>
+                    <form action="{{ url_for('edit_category', category_id=category.id) }}" method="post" class="edit-category-form">
+                        <input type="text" name="new_category_name" placeholder="New name" required>
+                        <input type="submit" value="Edit">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        <h3>Add Category:</h3>
+        <form action="{{ url_for('create_category') }}" method="post">
+            <span>Add Category:</span> <input type="text" name="category_name" placeholder="Enter category name" required>
+            <input type="submit" value="Add">
+        </form>
+        <h3>Remove Category:</h3>
+        <form method="post">
+            <select name="category_id" required>
+                <option value="" disabled selected>Select a category</option>
                 {% for category in categories %}
-                    <li>
-                        <a href="{{ url_for('category_notes', category_id=category.id) }}">{{ category.name }}</a>
-                        <button class="edit-category-btn">Edit Category</button>
-                        <form action="{{ url_for('edit_category', category_id=category.id) }}" method="post" class="edit-category-form">
-                            <input type="text" name="new_category_name" placeholder="New name" required>
-                            <input type="submit" value="Edit">
-                        </form>
-                    </li>
+                    <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
-            </ul>
-            <h3>Add Category:</h3>
-            <form action="{{ url_for('create_category') }}" method="post">
-                <input type="text" name="category_name" placeholder="Enter category name" required>
-                <input type="submit" value="Add Category">
-            </form>
-            <h3>Remove Category:</h3>
-            <form method="post">
-                <select name="category_id" required>
-                    <option value="" disabled selected>Select a category</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" value="Remove">
-            </form>
-        </div>
+            </select>
+            <input type="submit" value="Remove">
+        </form>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

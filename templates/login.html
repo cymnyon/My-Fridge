@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Log in</title>
+    <title>Log In</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -14,23 +14,47 @@
         }
         .login-container {
             text-align: center;
+            width: 300px;
+            margin: auto;
+        }
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-container label {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Log in</h1>
+        <h1>My Fridge</h1>
         {% if error %}
             <p>{{ error }}</p>
         {% endif %}
         <form action="/login" method="post">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
+            <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+            <input type="password" id="password" name="password" required>
             <input type="submit" value="Login">
         </form>
-        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+        <p class="signup-link">Don't have an account? <a href="/signup">Sign up</a></p>
     </div>
 </body>
 </html>

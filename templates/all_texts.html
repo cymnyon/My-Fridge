@@ -5,15 +5,55 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            width: 500px; /* Adjust the width as needed */
+            margin: 50px auto; /* Add margin at the top */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-top: 0;
+        }
+        .text-list {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+        .text-list li {
+            margin-bottom: 10px;
+        }
+        .text-list li a {
+            display: block;
+        }
+        .text-list li a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>All Texts</h1>
-    <ul>
-        {% for note in notes %}
-            <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
-        {% endfor %}
-    </ul>
-    
-    <a href="{{ url_for('main') }}">Back to Categories</a>
+    <div class="container">
+        <h1>All Texts</h1>
+        <ul class="text-list">
+            {% for note in all_notes %}
+                <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
+            {% endfor %}
+        </ul>
+        <a class="back-link" href="{{ url_for('main') }}">Back to Categories</a>
+    </div>
 </body>
 </html>

@@ -5,24 +5,58 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .signup-container {
+            text-align: center;
+            width: 300px;
+            margin: auto;
+        }
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .signup-container form label {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .signup-container form input[type="text"],
+        .signup-container form input[type="password"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .signup-container form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Sign Up</h1>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
-    <form method="post" action="{{ url_for('signup') }}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <label for="nickname">Nickname:</label>
-        <input type="text" id="nickname" name="nickname" required>
-        <br>
-        <input type="submit" value="Sign Up">
-    </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    <div class="signup-container">
+        <form method="post" action="{{ url_for('signup') }}">
+            <h1>Create A Fridge</h1>
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname" name="nickname" required>
+            <input type="submit" value="Sign Up">
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </div>
 </body>
 </html>

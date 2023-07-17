@@ -7,16 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Upload File</h1>
-    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
-        <select name="category_id" required>
-            {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
-        <input type="text" name="image_title" placeholder="Enter title" required>
-        <input type="submit" value="Upload">
-    </form>
+    <div class="container">
+        <h1>Upload File</h1>
+        <div class="upload-file-container">
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <div class="form-field">
+                    <select name="category_id" required>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-field">
+                    <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
+                </div>
+                <div class="form-field">
+                    <input type="text" name="image_title" placeholder="Enter title" required>
+                </div>
+                <input type="submit" value="Upload">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

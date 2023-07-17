@@ -5,10 +5,42 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-top: 0;
+        }
+        .result-content-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .result-content-container p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Result</h1>
-    <p>{{ text }}</p>
-    <a href="{{ url_for('main') }}">Back to Main Page</a>
+    <div class="container">
+        <h1>Result</h1>
+        <div class="result-content-container">
+            <p>{{ text }}</p>
+        </div>
+        <a href="{{ url_for('main') }}">Back to Main Page</a>
+    </div>
 </body>
 </html>

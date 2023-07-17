@@ -5,51 +5,135 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150vh;
+        }
+        .container {
+            text-align: center;
+            width: 500px; /* Increase the width of the container */
+            margin: 50px auto; /* Add margin at the top */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-top: 0;
+        }
+        .note-list {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+        .note-list li {
+            margin-bottom: 10px;
+        }
+        .add-note-container,
+        .add-text-from-image-container,
+        .remove-text-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .add-note-container h2,
+        .add-text-from-image-container h2,
+        .remove-text-container h2 {
+            margin-bottom: 10px;
+        }
+        .form-field {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-field input[type="text"],
+        .form-field input[type="submit"],
+        .form-field select {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-field textarea {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            resize: vertical;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ user.nickname }}'s {{ category.name }}</h1>
-    <ul>
-        {% for note in notes %}
-            <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
-        {% endfor %}
-    </ul>
-    <h2>Add Note:</h2>
-    <form action="{{ url_for('create_note') }}" method="post">
-        <input type="hidden" name="category_id" value="{{ category.id }}">
-        <label for="note_title">Note Title:</label>
-        <input type="text" id="note_title" name="note_title" required><br>
-        <label for="note_content">Note Content:</label><br>
-        <textarea id="note_content" name="note_content" rows="4" cols="50" required></textarea><br>
-        <input type="submit" value="Add">
-    </form>
-
-    <h2>Add Text from Image:</h2>
-    <form action="{{ url_for('add_text_from_image') }}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="category_id" value="{{ category.id }}">
-        <label for="image_file">Image:</label>
-        <input type="file" name="image_file" accept=".png, .jpg, .jpeg"><br>
-        <label for="image_title">Title:</label>
-        <input type="text" name="image_title" placeholder="Enter title"><br>
-        <label for="post_type">Post Type:</label>
-        <select name="post_type">
-            <option value="text">Text</option>
-            <option value="movie">Movie</option>
-        </select><br>
-        <input type="submit" value="Add Text from Image">
-    </form>
-
-    <h2>Remove Text:</h2>
-    <form action="{{ url_for('remove_text') }}" method="post">
-        <input type="hidden" name="category_id" value="{{ category.id }}">
-        <select name="note_id">
-            <option value="" disabled selected>Select One</option>
+    <div class="container">
+        <h1>{{ user.nickname }}'s {{ category.name }}</h1>
+        <ul class="note-list">
             {% for note in notes %}
-                <option value="{{ note.id }}">{{ note.title }}</option>
+                <li><a href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a></li>
             {% endfor %}
-        </select>
-        <input type="submit" value="Remove">
-    </form>
+        </ul>
+        <div class="add-note-container">
+            <h2>Add Note:</h2>
+            <form action="{{ url_for('create_note') }}" method="post">
+                <input type="hidden" name="category_id" value="{{ category.id }}">
+                <div class="form-field">
+                    <label for="note_title">Note Title:</label>
+                    <input type="text" id="note_title" name="note_title" required>
+                </div>
+                <div class="form-field">
+                    <label for="note_content">Note Content:</label>
+                    <textarea id="note_content" name="note_content" rows="4" cols="50" required></textarea>
+                </div>
+                <input type="submit" value="Add">
+            </form>
+        </div>
 
-    <a href="{{ url_for('main') }}">Back to Categories</a>
+        <div class="add-text-from-image-container">
+            <h2>Add Text from Image:</h2>
+            <form action="{{ url_for('add_text_from_image') }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="category_id" value="{{ category.id }}">
+                <div class="form-field">
+                    <label for="image_file">Image:</label>
+                    <input type="file" name="image_file" accept=".png, .jpg, .jpeg">
+                </div>
+                <div class="form-field">
+                    <label for="image_title">Title:</label>
+                    <input type="text" name="image_title" placeholder="Enter title">
+                </div>
+                <div class="form-field">
+                    <label for="post_type">Post Type:</label>
+                    <select name="post_type">
+                        <option value="text">Text</option>
+                        <option value="movie">Movie</option>
+                    </select>
+                </div>
+                <input type="submit" value="Add Text from Image">
+            </form>
+        </div>
+
+        <div class="remove-text-container">
+            <h2>Remove Text:</h2>
+            <form action="{{ url_for('remove_text') }}" method="post">
+                <input type="hidden" name="category_id" value="{{ category.id }}">
+                <div class="form-field">
+                    <select name="note_id">
+                        <option value="" disabled selected>Select One</option>
+                        {% for note in notes %}
+                            <option value="{{ note.id }}">{{ note.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" value="Remove">
+            </form>
+        </div>
+        <a href="{{ url_for('main') }}">Back to Categories</a>
+    </div>
 </body>
 </html>

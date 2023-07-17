@@ -265,13 +265,12 @@ def all_texts():
         return redirect(url_for('login'))
 
     user = User.query.get(session['user_id'])
-    categories = Category.query.filter_by(user_id=session['user_id']).all()
     all_notes = []
 
     for category in user.categories:
         all_notes.extend(category.notes)
 
-    return render_template('all_texts.html', user=user, categories=categories, all_notes=all_notes)
+    return render_template('all_texts.html', all_notes=all_notes)
 
 @app.route('/show_all_texts')
 def show_all_texts():
