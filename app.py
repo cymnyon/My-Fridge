@@ -9,7 +9,7 @@ import re
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///handwriting.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'  # Add a secret key for session management
+app.config['SECRET_KEY'] = 'your_secret_key'
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -223,15 +223,6 @@ def remove_category(category_id):
 
     category = Category.query.get(category_id)
     if category and category.user_id == session['user_id']:
-        # Reassign notes to the "Show all" category
-        # show_all_category = Category.query.filter_by(user_id=session['user_id'], name='Show all').first()
-
-        # if show_all_category is None:
-        #     # Create the "Show all" category if it doesn't exist
-        #     show_all_category = Category(name='Show all', user_id=session['user_id'])
-        #     db.session.add(show_all_category)
-        #     db.session.commit()
-
         notes = Note.query.filter_by(category_id=category_id).all()
         for note in notes:
             note.category_id = None
