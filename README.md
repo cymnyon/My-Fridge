@@ -60,4 +60,4 @@ I am committed to continuously improving **My Fridge** to meet your needs and ex
 
 Thank you for choosing **My Fridge** to help you preserve and organize your memories and interests. I hope you enjoy using the app!
 
-**The My Fridge Team**
+**My Fridge Team**
