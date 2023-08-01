@@ -1,0 +1,4 @@
+Flask==2.0.1
+Flask-SQLAlchemy==3.0.0
+opencv-python-headless==4.5.4.58
+pytesseract==0.3.8
