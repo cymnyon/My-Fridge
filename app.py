@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
@@ -17,11 +18,12 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     nickname = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
 
-# Define Category model
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
@@ -31,14 +33,15 @@ class Category(db.Model):
     def __repr__(self):
         return f"<Category {self.name}>"
     
-# Define Note model
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    deleted_at = db.Column(db.DateTime)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     category = db.relationship('Category', backref=db.backref('notes', lazy=True))
-    post_type = db.Column(db.String(10), nullable=False)
 
     def __repr__(self):
         return f"<Note {self.title}>"
@@ -240,9 +243,11 @@ def create_note():
     category_id = request.form['category_id']
     note_title = request.form['note_title']
     note_content = request.form['note_content']
+    
     note = Note(title=note_title, content=note_content, category_id=category_id)
     db.session.add(note)
     db.session.commit()
+    
     return redirect(url_for('category_notes', category_id=category_id))
 
 @app.route('/result')

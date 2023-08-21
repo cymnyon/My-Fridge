@@ -1,0 +1,132 @@
+/* Styles */
+/* {
+    /* font-family: "Outfit"; */
+    /* font-weight: bold; */
+
+.headline-text{
+  color: #FFF;
+  font-size: 70px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 70px */
+  letter-spacing: 4.6px;
+  text-transform: capitalize;
+  text-align: left;
+}
+  
+.open{
+  color: rgba(121, 173, 251, 0.80);
+  font-size: 35px;
+}
+.text-sel-buttons{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+    
+}
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+    
+.text-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, #78CCCC 0%, rgba(216, 150, 255, 0.47) 100%);
+}
+    
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: #ffffff ;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+  
+label {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+  
+input {
+  padding: 0.5rem;
+  /* margin-top: 0.5rem; */
+  width: 70%;
+  min-height: 30px;
+  border: 1px solid black;
+  border-radius: 50px;
+  margin: 1em;
+}
+  
+button {
+  /* margin-top: 1rem; */
+  /* padding: 0.5rem 1rem; */
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: #ffffff;
+  width: 72%;
+  min-height: 45px;
+  /* border: 1px solid black; */
+  /* border-radius: 100px; */
+  /* border: none; */
+  cursor: pointer;
+  margin: 1em;
+  border-radius: 50px;
+  background: rgba(121, 173, 251, 0.80);
+}
+  
+a{
+  color: #000;
+
+  /* SUB HEADER */
+  font-family: Outfit;
+  /* font-size: 20px; */
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27.5px; /* 137.5% */
+  text-decoration: none;
+}
+
+.forgot-password{
+  display: flex ;  
+  justify-content: flex-end;
+  width: 70%;
+}
+
+.main-page-buttons button{
+  padding: 0.5rem;
+  background-color: #007bff;
+  color: #ffffff;
+  width: 30%;
+  min-height: 45px;
+  /* border: 1px solid black; */
+  /* border-radius: 100px; */
+  /* border: none; */
+  cursor: pointer;
+  margin: 1em;
+  border-radius: 50px;
+  background: rgba(121, 173, 251, 0.80);
+}
+
+.main-page-sections{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, #78CCCC 0%, rgba(216, 150, 255, 0.47) 100%);
+}
